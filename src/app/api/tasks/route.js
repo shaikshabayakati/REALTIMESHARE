@@ -13,3 +13,12 @@ export async function GET(request) {
     const tasks = await TASKMODEL.find()
     return NextResponse.json({tasks})
 }
+
+export async function DELETE(request){
+    await connectDB()
+    const {_id} = await request.json()
+    await TASKMODEL.deleteOne({_id})
+      return NextResponse.json(
+            { message: "Task deleted successfully" },
+            { status: 200 })
+}

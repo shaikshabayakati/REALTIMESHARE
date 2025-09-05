@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import axios from "axios";
+import { Delete } from "lucide-react";
 const Mainpage = () => {
   const [tasks, setTasks] = useState([]);
 
@@ -23,6 +24,18 @@ const Mainpage = () => {
     }
     fetchData();
   }, []);
+ async function Deletefunction(id) {
+    try {
+        const response = await axios.delete("/api/tasks", {
+            data: { _id: id }
+        });
+        // Refresh the tasks list after successful deletion
+        const res = await axios.get("/api/tasks");
+        setTasks(res.data.tasks);
+    } catch (error) {
+        console.error("Error deleting task:", error);
+    }
+}
 
   return (
     <div className="">
@@ -44,6 +57,9 @@ const Mainpage = () => {
                 <CardContent>
                   <p>{x.description}</p>
                 </CardContent>
+                <CardFooter>
+                  <Delete className="cursor-pointer" onClick={()=>Deletefunction(x._id)}/>
+                </CardFooter>
               </Card>
             </div>
           ))}
