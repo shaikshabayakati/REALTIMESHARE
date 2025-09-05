@@ -15,7 +15,7 @@ const Page = () => {
       title:title,
        description:postdescription
     }
-    axios.post("/api/tasks",dets).then(
+    axios.post("https://realtimeshare.vercel.app/api/tasks",dets).then(
       router.push("/")
       
     )
