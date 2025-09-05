@@ -15,7 +15,7 @@ const Page = () => {
       title:title,
        description:postdescription
     }
-    axios.post("http://localhost:3000/api/tasks",dets).then(
+    axios.post("/api/tasks",dets).then(
       router.push("/")
       
     )

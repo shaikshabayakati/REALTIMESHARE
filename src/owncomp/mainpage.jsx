@@ -18,7 +18,7 @@ const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get("http://localhost:3000/api/tasks");
+      const res = await axios.get("/api/tasks");
       setTasks(res.data.tasks); // Adjust according to your API response shape
     }
     fetchData();
