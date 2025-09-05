@@ -1,12 +1,31 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const connectDB = () => {
-  try {
-    mongoose.connect(process.env.MONOGO_URI);
-    console.log("Connected to DB Less Goo");
-  } catch (error) {
-    console.log(error);
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error('Please add your MongoDB URI to .env');
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function connectDB() {
+  if (cached.conn) {
+    return cached.conn;
   }
-};
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      bufferCommands: false,
+    }).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
 
 export default connectDB;
