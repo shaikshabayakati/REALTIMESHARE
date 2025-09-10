@@ -16,7 +16,7 @@ import axios from "axios";
 import { Delete, LoaderIcon } from "lucide-react";
 const Mainpage = () => {
   const [tasks, setTasks] = useState([]);
-  const [click,setclick] = useState(false)
+  const [click,setclick] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -26,7 +26,7 @@ const Mainpage = () => {
     fetchData();
   }, []);
  async function Deletefunction(id) {
-    setclick(true)
+    setclick(id)
     try {
         const response = await axios.delete("/api/tasks", {
             data: { _id: id }
@@ -37,7 +37,7 @@ const Mainpage = () => {
     } catch (error) {
         console.error("Error deleting task:", error);
     }
-    setclick(false)
+    setclick(null)
 }
 
   return (
@@ -61,7 +61,8 @@ const Mainpage = () => {
                   <p>{x.description}</p>
                 </CardContent>
                 <CardFooter>
-                 { click?<LoaderIcon className="animate-spin"/>:<Delete className="cursor-pointer" onClick={()=>Deletefunction(x._id)}/>}
+                 { 
+                 x._id==click?<LoaderIcon className="animate-spin"/>:<Delete className="cursor-pointer" onClick={()=>Deletefunction(x._id)}/>}
                 </CardFooter>
               </Card>
             </div>
